@@ -34,7 +34,6 @@ version: 2.1
             
 jobs:
   build-frontend:
-    working_directory: ~/project/frontend
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -44,8 +43,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            npm install
-            npm run build
+            ls
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
