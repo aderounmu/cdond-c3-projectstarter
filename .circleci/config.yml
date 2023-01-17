@@ -216,6 +216,7 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
+            cd backend
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
