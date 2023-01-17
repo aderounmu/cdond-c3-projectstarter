@@ -218,8 +218,9 @@ jobs:
             # Your code here
             cd backend
             npm run migrations > migrations_dump.txt
+          no_output_timeout: 30m
       - run:
-          name: Send migration results to memstash
+          name: Send migration results to  kvdb.io
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
