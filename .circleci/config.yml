@@ -174,10 +174,15 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout 
+      
       - add_ssh_keys:
           fingerprints: ["c7:a1:83:a9:f7:78:fe:6e:8c:e3:d5:10:7d:77:01:18"]
       - attach_workspace:
           at: ~/
+      - run:
+          name: Install dependencies (aws-cli)
+          command: |
+            apk add --no-cache aws-cli
       - run:
           name: Install dependencies
           command: |
