@@ -160,8 +160,8 @@ jobs:
           command: |
             cd .circleci/ansible/
             aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"\
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters Name=Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}\
             --output text >> inventory.txt
             echo inventory.txt
       - persist_to_workspace:
@@ -242,8 +242,8 @@ jobs:
           command: |
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"\
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters Name=Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}\
             --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
