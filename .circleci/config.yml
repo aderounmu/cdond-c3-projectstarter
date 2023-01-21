@@ -246,10 +246,6 @@ jobs:
           name: Install dependencies (tar , gzip)
           command: |
             sudo apt-get install tar gzip
-      # - run:
-      #     name: Install dependencies (node and npm)
-      #     command: |
-      #       apk add --update nodejs npm
       - run:
           name: Get backend url
           command: |
@@ -277,7 +273,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: python:3.9-alpine3.17
+      - image: circleci/node:13.8.0
     steps:
       - checkout 
       - add_ssh_keys:
@@ -285,17 +281,18 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Install dependencies (ansible)
-          command: |
-            apk add --update ansible tar gzip
-      - run:
           name: Install dependencies (aws-cli)
           command: |
-            apk add aws-cli
+            sudo apt-get update
+            sudo apt-get install awscli
       - run:
-          name: Install dependencies (node and npm)
+          name: Install dependencies (python)
           command: |
-            apk add --update nodejs npm
+            sudo apt-get install python3
+      - run:
+          name: Install dependencies (ansible tar gzip)
+          command: |
+            sudo apt-get install ansible tar gzip
       - run:
           name: Deploy backend
           command: |
@@ -394,8 +391,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
