@@ -24,7 +24,7 @@ commands:
           when: on_fail
           command: |
             # Curl command is here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            export SUCCESS = curl --insecure  https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            export SUCCESS = $(curl --insecure  https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -238,14 +238,14 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Install dependencies (tar , gzip)
-          command: |
-            sudo apt-get update 
-            sudo apt-get tar gzip
-      - run:
           name: Install dependencies (aws-cli)
           command: |
+            sudo apt-get update
             sudo apt-get install awscli
+      - run:
+          name: Install dependencies (tar , gzip)
+          command: |
+            sudo apt-get install tar gzip
       # - run:
       #     name: Install dependencies (node and npm)
       #     command: |
@@ -390,8 +390,8 @@ workflows:
       #         only: [master]
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - run-migrations
+          # requires: [configure-infrastructure]
       - deploy-frontend
           # requires: [run-migrations]
       # - deploy-backend:
