@@ -23,7 +23,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            # Curl command is here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS = curl --insecure  https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}
             if(( $SUCCESS==1 )); 
             then
@@ -390,8 +390,8 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
