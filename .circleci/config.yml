@@ -24,7 +24,7 @@ commands:
           when: on_fail
           command: |
             # Curl command is here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = curl --insecure  https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            export SUCCESS = curl --insecure  https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -232,23 +232,24 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: python:3.9-alpine3.17
+      - image: circleci/node:13.8.0
     steps:
       - checkout 
       - attach_workspace:
           at: ~/
       - run:
-          name: Install dependencies (ansible)
+          name: Install dependencies (tar , gzip)
           command: |
-            apk add --update ansible tar gzip
+            sudo apt-get update 
+            sudo apt-get tar gzip
       - run:
           name: Install dependencies (aws-cli)
           command: |
-            apk add aws-cli
-      - run:
-          name: Install dependencies (node and npm)
-          command: |
-            apk add --update nodejs npm
+            sudo apt-get install awscli
+      # - run:
+      #     name: Install dependencies (node and npm)
+      #     command: |
+      #       apk add --update nodejs npm
       - run:
           name: Get backend url
           command: |
@@ -261,6 +262,7 @@ jobs:
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
+    
       - run:
           name: Deploy frontend objects
           command: |
