@@ -1,15 +1,18 @@
 ---
 - name : Extracting files to remote server
+  become: true
   unarchive: 
     src: .circleci/ansible/roles/deploy/files/artifact.tar.gz
     dest: ./
     remote_src: yes
 
 - name : Installing dependencies
+  become: true
   shell: |
     npm install
 
 - name : Executing node
+  become: true
   shell: |
     pm2 stop default
     pm2 start npm -- start
