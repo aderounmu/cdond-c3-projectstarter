@@ -294,15 +294,20 @@ jobs:
           command: |
             sudo apt-get install ansible tar gzip
       - run:
-          name: Deploy backend
+          name: Build backend
           command: |
             cd backend
             npm i
             npm run build
-            cd ..
+      - run:
+          name: Zip backend
+          command: |
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
             mv artifact.tar.gz .circleci/ansible/roles/deploy/files
+      - run:
+          name: Depoly using Ansible
+          command: |
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
