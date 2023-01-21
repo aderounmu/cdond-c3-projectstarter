@@ -2,7 +2,7 @@
 - name : Extracting files to remote server
   become: true
   unarchive: 
-    src: .circleci/ansible/roles/deploy/files/artifact.tar.gz
+    src: files/artifact.tar.gz
     dest: ./
     remote_src: yes
 
