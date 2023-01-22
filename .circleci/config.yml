@@ -305,8 +305,8 @@ jobs:
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
             ls
-            mv artifact.tar.gz .circleci/ansible/roles/deploy/files
             cp ./artifact.tar.gz .circleci/ansible/roles/deploy/files
+            # mv artifact.tar.gz .circleci/ansible/roles/deploy/files
             ls .circleci/ansible/roles/deploy/files
       - run:
           name: Depoly using Ansible
