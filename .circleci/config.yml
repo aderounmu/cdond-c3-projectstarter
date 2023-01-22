@@ -218,10 +218,12 @@ jobs:
             # Your code here
             cd backend
             npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
           no_output_timeout: 30m
       - run:
           name: Send migration results to  kvdb.io
           command: |
+            ls ~/project/backend/migrations_dump.txt
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
                 # If you are using kvdb.io, generate the bucket ID "3CGwxq5apaCdRvB1ToTBdP" in your local terminal first
