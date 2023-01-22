@@ -226,7 +226,7 @@ jobs:
             then
                 # If you are using kvdb.io, generate the bucket ID "3CGwxq5apaCdRvB1ToTBdP" in your local terminal first
                 echo "migration_${CIRCLE_WORKFLOW_ID:0:7} done"
-                curl https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+                curl --insecure https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - destroy-environment
       - revert-migrations   
