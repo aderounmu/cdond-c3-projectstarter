@@ -1,49 +1,49 @@
-# ---
-# - name : Extracting files to remote server
-#   become: true
-#   unarchive: 
-#     src: files/artifact.tar.gz
-#     dest: ./
-
-# - name : Installing dependencies
-#   shell: |
-#     npm install
-
-# - name : Executing node
-#   shell: |
-#     pm2 stop default
-#     pm2 start npm -- start
-
-
 ---
-
-- name: Creates directory
-  file:
-    path: ~/backend
-    state: directory
-
-- name : Copy the folder from the backend 
-  become: true
-  copy: 
-    src: "files/artifact.tar.gz"
-    dest: "~/backend/"
-
 - name : Extracting files to remote server
   become: true
   unarchive: 
-    src: ~/backend/artifact.tar.gz
-    dest: ~/backend
-    remote_src: true
+    src: files/artifact.tar.gz
+    dest: ./
 
 - name : Installing dependencies
-  become: true
   shell: |
-    cd ~/backend
     npm install
 
 - name : Executing node
-  become: true
   shell: |
-    cd ~/backend
     pm2 stop default
     pm2 start npm -- start
+
+
+# ---
+
+# - name: Creates directory
+#   file:
+#     path: ~/backend
+#     state: directory
+
+# - name : Copy the folder from the backend 
+#   become: true
+#   copy: 
+#     src: "files/artifact.tar.gz"
+#     dest: "~/backend/"
+
+# - name : Extracting files to remote server
+#   become: true
+#   unarchive: 
+#     src: ~/backend/artifact.tar.gz
+#     dest: ~/backend
+#     remote_src: true
+
+# - name : Installing dependencies
+#   become: true
+#   shell: |
+#     cd ~/backend
+#     npm install
+
+# - name : Executing node
+#   become: true
+#   shell: |
+#     cd ~/backend
+#     pm2 stop default
+#     pm2 start npm -- start
