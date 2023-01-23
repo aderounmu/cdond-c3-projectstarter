@@ -378,17 +378,17 @@ jobs:
             export OldWorkflowID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\ 'WorkflowID\'1.Value" \
             --no-paginate --output text) 
-            echo $0ldWorkflowID >> ~/OldWorkflowID.txt
+            echo $OldWorkflowID >> ~/OldWorkflowID.txt
             cat ~/OldWorkflowID.txt
       - run:
           name: Update cloudfront distribution
           command: |
             ls 
-            export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
+            # export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront. yml \
             -- stack-name "InitialStack-${OldWorkflowID}" \
-            --parameter-overrides WorkflowID-"udapeople-${CIRCLE_WORKFLOW_ID:0:7?}" \
+            --parameter-overrides WorkflowID-"udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
 
             echo OldWorkflowID: "${OldWorkflowID}"
@@ -443,7 +443,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
+      - cloudfront-update:
+          requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
