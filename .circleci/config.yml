@@ -354,28 +354,47 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
                 # Change this to 0 after the job fails
-              exit 1
+              exit 0
             else
               exit 1
             fi
       - destroy-environment 
       - revert-migrations  
 
-  # cloudfront-update:
-  #   docker:
-  #     # Docker image here that supports AWS CLI
-  #   steps:
-  #     # Checkout code from git
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           # your code here
-  #     - run:
-  #         name: Update cloudfront distribution
-  #         command: |
-  #           # your code here
-  #     # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+      - image: circleci/node:13.8.0 
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies (aws-cli)
+          command: |
+            sudo apt-get update
+            sudo apt-get install awscli
 
+      - run:
+          name: Get old work flow - id 
+          command: |
+            export OldWorkflowID=$(aws cloudformation \
+            list-exports --query "Exports[?Name==\ 'WorkflowID\'1.Value" \
+            --no-paginate --output text) 
+            echo $0ldWorkflowID >> ~/OldWorkflowID.txt
+            cat ~/OldWorkflowID.txt
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            ls 
+            export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront. yml \
+            -- stack-name "InitialStack-${OldWorkflowID}" \
+            --parameter-overrides WorkflowID-"udapeople-${CIRCLE_WORKFLOW_ID:0:7?}" \
+            --tags project=udapeople
+
+            echo OldWorkflowID: "${OldWorkflowID}"
+            echo Current Workflow Id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment 
+      - revert-migrations
 # cleanup:
 #     docker:
 #       # Docker image here
