@@ -32,6 +32,30 @@ commands:
               npm install
               npm run migrations:revert
             fi
+  install-aws-cli-1:
+    description: Installing aws cli-1
+    steps:
+      - run: 
+          name: Install aws-cli-1
+          command: |
+            sudo apt-get update
+            sudo apt-get install awscli
+
+  install-aws-cli-2:
+    description: Installing aws cli-2 
+    steps:
+      - run: 
+          name: Install unzip
+          command: |
+            sudo apt-get update
+            sudo apt-get unzip
+      - run: 
+          name: Install Awscli-v2
+          command:  | 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            aws --version
             
 jobs:
   build-frontend:
@@ -170,6 +194,7 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment      
 
+  # used aws-cli-1 here
   configure-infrastructure:
     docker:
       - image: python:3.9-alpine3.17
@@ -196,17 +221,13 @@ jobs:
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-server.yml      
       - destroy-environment    
   
-  # circleci/node:17.2.0
+
   run-migrations:
     docker:
       - image: circleci/node:13.8.0 
     steps:
       - checkout
-      - run:
-          name: Install dependencies (aws-cli)
-          command: |
-            sudo apt-get update
-            sudo apt-get install awscli
+      - install-aws-cli-2
       - run: 
           name: Install packages for backend
           command: |
@@ -239,11 +260,7 @@ jobs:
       - checkout 
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies (aws-cli)
-          command: |
-            sudo apt-get update
-            sudo apt-get install awscli
+      - install-aws-cli-2
       - run:
           name: Install dependencies (tar , gzip)
           command: |
@@ -282,11 +299,7 @@ jobs:
           fingerprints: ["c7:a1:83:a9:f7:78:fe:6e:8c:e3:d5:10:7d:77:01:18"]
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies (aws-cli)
-          command: |
-            sudo apt-get update
-            sudo apt-get install awscli
+      - install-aws-cli-2
       - run:
           name: Install dependencies (python)
           command: |
@@ -324,11 +337,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: Install dependencies (aws-cli)
-          command: |
-            sudo apt-get update
-            sudo apt-get install awscli
+      - install-aws-cli-2
       - run:
           name: Backend smoke test.
           command: |
@@ -363,14 +372,10 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image:  amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: Install dependencies (npm and node)
-          command: |
-            yum install epel-release
-            yum install -y npm nodejs
+      - install-aws-cli-2
       - run:
           name: Get old work flow - id 
           command: |
