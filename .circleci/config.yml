@@ -11,8 +11,8 @@ commands:
           when: on_fail
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws  cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws  cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             
 
   revert-migrations:
@@ -226,7 +226,7 @@ jobs:
       - image: circleci/node:13.8.0 
     steps:
       - checkout
-      - install-aws-cli-2
+      - install-aws-cli-1
       - run: 
           name: Install packages for backend
           command: |
@@ -259,7 +259,7 @@ jobs:
       - checkout 
       - attach_workspace:
           at: ~/
-      - install-aws-cli-2
+      - install-aws-cli-1
       - run:
           name: Install dependencies (tar , gzip)
           command: |
@@ -298,7 +298,7 @@ jobs:
           fingerprints: ["c7:a1:83:a9:f7:78:fe:6e:8c:e3:d5:10:7d:77:01:18"]
       - attach_workspace:
           at: ~/
-      - install-aws-cli-2
+      - install-aws-cli-1
       - run:
           name: Install dependencies (python)
           command: |
@@ -336,7 +336,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - install-aws-cli-2
+      - install-aws-cli-1
       - run:
           name: Backend smoke test.
           command: |
@@ -444,9 +444,9 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
