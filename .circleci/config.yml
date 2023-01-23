@@ -402,11 +402,12 @@ jobs:
 
   cleanup:
     docker:
-      - image: circleci/node:13.8.0
+      # - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
-      - install-aws-cli-2
+      # - install-aws-cli-2
       - run:
           name: Get old stack workflow id
           command: |
@@ -432,11 +433,12 @@ jobs:
           name: Remove old stacks and files
           command: |
             ls 
-            export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
-            echo OldWorkflowID: "${OldWorkflowID}"
+            # export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
+            # echo OldWorkflowID: "${OldWorkflowID}"
 
-            # if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+            # if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+            
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               echo "__________ Cleanup Confirmed ____________"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
