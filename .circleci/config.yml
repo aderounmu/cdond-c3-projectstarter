@@ -45,10 +45,9 @@ commands:
     description: Installing aws cli-2 
     steps:
       - run: 
-          name: Install unzip
+          name: update sudo
           command: |
             sudo apt-get update
-            sudo apt-get unzip
       - run: 
           name: Install Awscli-v2
           command:  | 
