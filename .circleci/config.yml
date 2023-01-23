@@ -369,7 +369,8 @@ jobs:
       - run:
           name: Install dependencies (npm and node)
           command: |
-            yum install -y nodejs
+            yum install epel-release
+            yum install -y npm nodejs
       - run:
           name: Get old work flow - id 
           command: |
