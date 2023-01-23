@@ -376,7 +376,7 @@ jobs:
       - checkout
       - install-aws-cli-2
       - run:
-          name: Get old work flow - id 
+          name: Get old work flow - ids
           command: |
             export OldWorkflowID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
