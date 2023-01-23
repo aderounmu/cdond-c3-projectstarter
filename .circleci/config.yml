@@ -386,7 +386,7 @@ jobs:
 
             #save old work flow id using kvid
 
-            curl --insecure https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/oldworkflowid_${CIRCLE_WORKFLOW_ID:0:7}  -d '${OldWorkflowID}'
+            curl --insecure https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/oldworkflowid_${CIRCLE_WORKFLOW_ID:0:7}  -d "${OldWorkflowID}"
 
       - run:
           name: Update cloudfront distribution
@@ -481,5 +481,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
