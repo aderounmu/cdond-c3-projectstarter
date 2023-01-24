@@ -414,8 +414,6 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            # your code here
-            
             # Fetch the Old workflow ID from kyiv
 
             export OldWorkflowID=$(curl --insecure https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/oldworkflowid_${CIRCLE_WORKFLOW_ID:0:7})
