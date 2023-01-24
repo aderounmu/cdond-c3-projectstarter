@@ -412,44 +412,22 @@ jobs:
       - checkout
       # - install-aws-cli-2
       - run:
-          name: Get old stack workflow id
+          name: Get old stack workflow id and Remove old stacks and files
           command: |
             # Fetch the Old workflow ID from kyiv
 
             export OldWorkflowID=$(curl --insecure https://kvdb.io/3CGwxq5apaCdRvB1ToTBdP/oldworkflowid_${CIRCLE_WORKFLOW_ID:0:7})
            
-            
+            echo old
+
             # Fetch the stack names          
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
             --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
 
-            #save oldworkflowID and stacks to a file
-            echo $OldWorkflowID >> ~/OldWorkflowID.txt
-            cat ~/OldWorkflowID.txt
-
-            #save stacks to file
-            echo $STACKS[@] >> ~/STACKS.txt
-            cat ~/STACKS.txt
-
-
-
-
-
-
-    
-      - run:
-          name: Remove old stacks and files
-          command: |
-            
-
-            export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
             
-            export STACKS=($(cat ~/STACKS.txt))
-            echo STACKS: "${STACKS[@]}"
-
-
 
             # if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
 
