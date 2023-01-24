@@ -448,7 +448,7 @@ jobs:
             export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"
             
-            export STACKS[@]=$(cat ~/STACKS.txt)
+            export STACKS=($(cat ~/STACKS.txt))
             echo STACKS: "${STACKS[@]}"
 
 
