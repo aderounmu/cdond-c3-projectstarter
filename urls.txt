@@ -1,6 +1,9 @@
 [URL01] https://github.com/aderounmu/cdond-c3-projectstarter
 
-[URL02] http://udapeople-782dd18.s3-website-us-east-1.amazonaws.com/
-[URL03] d1qgvqpo25uyww.cloudfront.net
+[URL02] http://udapeople-6a9a525.s3-website-us-east-1.amazonaws.com/
+[URL03] http://d1qgvqpo25uyww.cloudfront.net
 [URL04] http://3.90.82.196:3030/api/status
 [URL05] http://100.24.235.98:9090/
+
+
+#For URL02 noticed using it over https gaves errors but it works over http
