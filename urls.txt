@@ -1,6 +1,6 @@
 [URL01] https://github.com/aderounmu/cdond-c3-projectstarter
 
-[URL02] during submission
-[URL03]
-[URL04]
-[URL05]
+[URL02] http://udapeople-782dd18.s3-website-us-east-1.amazonaws.com/
+[URL03] d1qgvqpo25uyww.cloudfront.net
+[URL04] http://3.90.82.196:3030/api/status
+[URL05] http://100.24.235.98:9090/
